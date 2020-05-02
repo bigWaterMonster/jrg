@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* html,
+    body {
+      width: 100%;
+      height: 100%;
+    } */
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+</body>
+<script>
+  window.onload = function () {
+    const height = document.documentElement.clientHeight
+    const width = document.documentElement.clientWidth
+    const canvas = document.getElementById('canvas')
+    canvas.width = width
+    canvas.height = height
+
+    const ctx = canvas.getContext('2d')
+    let painting = false
+    ctx.fillStyle = 'black'
+    ctx.lineWidth = 8
+    ctx.lineCap = 'round'
+    ctx.lineJoin = 'round'
+    let x
+    let y
+
+    function isMoveFunc() {
+      return 'ontouchstart' in document.documentElement
+    }
+    const isMove = isMoveFunc()
+    function startEvent(event) {
+      const e = isMove ? event.touches[0] : event
+      painting = true
+      ctx.beginPath();
+      x = e.clientX
+      y = e.clientY
+      ctx.moveTo(x, y)
+    }
+    function moveEvent(event) {
+      const e = isMove ? event.touches[0] : event
+      if (painting) {
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        x = e.clientX
+        y = e.clientY
+      }
+    }
+    function endEvent() {
+      painting = false
+    }
+    if (isMove) {
+      canvas.ontouchstart = startEvent
+      canvas.ontouchmove = moveEvent
+      canvas.ontouchend = endEvent
+    } else {
+      canvas.onmousedown = startEvent
+      canvas.onmousemove = moveEvent
+      canvas.onmouseup = endEvent
+    }
+  };
+  // fillRect
+  // strokeRect
+  // clearRect
+  // beginPath
+  // moveTo
+  // lineTo
+  // fill
+  // arc
+  // stroke
+
+
+
+</script>
+
+</html>
